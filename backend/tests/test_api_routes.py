@@ -24,7 +24,7 @@ class ApiRouteTests(unittest.IsolatedAsyncioTestCase):
         ]
 
         settings = Settings(database_url="postgresql+asyncpg://localhost/stock_dashboard")
-        session = object()
+        dummy_session = object()
 
         with patch("src.api.routes.CacheService") as cache_service_cls:
             service_instance = cache_service_cls.return_value
@@ -34,7 +34,7 @@ class ApiRouteTests(unittest.IsolatedAsyncioTestCase):
                 symbol="aapl",
                 interval="1d",
                 period="1mo",
-                session=session,  # type: ignore[arg-type]
+                session=dummy_session,  # type: ignore[arg-type]
                 settings=settings,
             )
 

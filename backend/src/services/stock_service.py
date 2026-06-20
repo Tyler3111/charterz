@@ -67,19 +67,19 @@ def _transform_history(history: pd.DataFrame) -> list[dict[str, Any]]:
         return []
 
     rows: list[dict[str, Any]] = []
-    for index, row in history.iterrows():
-        timestamp = index.to_pydatetime()
+    for row in history.itertuples(index=True):
+        timestamp = row.Index.to_pydatetime()
         if timestamp.tzinfo is None:
             timestamp = timestamp.replace(tzinfo=UTC)
         timestamp_ms = int(timestamp.timestamp() * 1000)
         rows.append(
             {
                 "time": timestamp_ms,
-                "open": float(row.get("Open", 0.0)),
-                "high": float(row.get("High", 0.0)),
-                "low": float(row.get("Low", 0.0)),
-                "close": float(row.get("Close", 0.0)),
-                "volume": int(row.get("Volume", 0)),
+                "open": float(getattr(row, "Open", 0.0)),
+                "high": float(getattr(row, "High", 0.0)),
+                "low": float(getattr(row, "Low", 0.0)),
+                "close": float(getattr(row, "Close", 0.0)),
+                "volume": int(getattr(row, "Volume", 0)),
             }
         )
     return rows
