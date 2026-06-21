@@ -45,6 +45,8 @@ async def get_stock(
 ) -> StockResponse:
     """Return OHLCV stock data from cache or upstream source."""
     cache_service = CacheService(session=session, settings=settings)
+    print("entere dthe fun")
+
 
     cached_data = await cache_service.get_cached(symbol=symbol, interval=interval, period=period)
     if cached_data is not None:
